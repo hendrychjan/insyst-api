@@ -28,20 +28,10 @@ export default class Server {
    * @param endpoint A string representing the endpoint of the route
    * @param route An instance of the Route class that handles the route
    */
-  public useRoute(endpoint: string, route: Route) {
+  public useRoute(endpoint: string, route: Route): void {
     // Hook the route to the express app
     this.app.use(endpoint, route.getRouter());
     
     Logger.debug(`Defined a route at ${endpoint}`);
-  }
-
-  public listRoutes() {
-    Logger.debug("printing");
-    this.app._router.stack.forEach((middleware: any) => {
-      if (middleware.route) {
-        // Print HTTP method and path for each route
-        console.log(`${Object.keys(middleware.route.methods).toString().toUpperCase()} ${middleware.route.path}`);
-      }
-    });
   }
 }

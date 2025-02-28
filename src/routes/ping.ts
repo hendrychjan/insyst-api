@@ -14,7 +14,7 @@ export default class Ping extends Route {
   /**
    * Responds with a simple message to indicate that the API is running
    */
-  private ping(req: Request, res: Response) {
+  private ping(req: Request, res: Response): void {
     res.send("API running!");
   }
 }

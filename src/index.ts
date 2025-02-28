@@ -9,5 +9,3 @@ define_routes(server);
 
 // Start the server
 server.start();
-
-server.listRoutes();
