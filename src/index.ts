@@ -1,16 +1,22 @@
-import Server from "./services/server";
-import defineRoutes from "./startup/define_routes";
+import startServer from "./startup/start_server";
 import loadEnv from "./startup/load_env";
+import connectDb from "./startup/connect_db";
+import Logger from "./services/logger";
 
-// Load the environment variables
-loadEnv();
+async function main() {
+  try {
+    // Load the environment variables
+    loadEnv();
 
-// Create a new server instance
-const port: number = parseInt(process.env.PORT as string);
-const server = new Server(port);
+    // Connect to mongodb
+    await connectDb();
 
-// Set up the server
-defineRoutes(server);
+    // Start the server
+    startServer();
+  } catch (e: any) {
+    Logger.fatal(e);
+    process.exit(1);
+  }
+}
 
-// Start the server
-server.start();
+main();

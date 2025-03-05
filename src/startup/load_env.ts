@@ -1,10 +1,9 @@
 import dotenv from "dotenv";
-import Logger from "../services/logger";
 
 /**
- * Load environment variables from the .env file
+ * A routine to load environment variables from the .env file
  */
-export default function loadEnv() {
+export default function loadEnv(): void {
   // Load
   dotenv.config();
 
@@ -12,7 +11,11 @@ export default function loadEnv() {
 
   // PORT
   if (!parseInt(process.env.PORT ?? "")) {
-    Logger.fatal("The PORT environment variable is not set or is invalid.");
-    process.exit(1);
+    throw "The PORT environment variable is not set or is invalid.";
+  }
+
+  // MONGODB_URI
+  if (!process.env.MONGODB_URI) {
+    throw "The MONGODB_URI environment variable is not set.";
   }
 }
