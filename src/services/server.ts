@@ -34,4 +34,12 @@ export default class Server {
     
     Logger.debug(`Defined a route at ${endpoint}`);
   }
+
+  /**
+   * Assign a middleware to the server
+   * @param middleware The middleware to assign
+   */
+  public useMiddleware(middleware: any): void {
+    this.app.use(middleware);
+  }
 }

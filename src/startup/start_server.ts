@@ -1,5 +1,7 @@
+import express from "express";
 import Server from "../services/server";
 import PingRoute from "../routes/ping";
+import UsersRoute from "../routes/users";
 import Logger from "../services/logger";
 
 /**
@@ -8,6 +10,16 @@ import Logger from "../services/logger";
  */
 function defineRoutes(server: Server): void {
   server.useRoute("/ping", new PingRoute());
+  server.useRoute("/users", new UsersRoute());
+}
+
+/**
+ * Global function to define all the middleware for the server
+ * @param server The server instance to define the middleware on
+ */
+function defineMiddleware(server: Server): void {
+  server.useMiddleware(express.json());
+  server.useMiddleware(express.urlencoded({ extended: true }));
 }
 
 /**
@@ -20,6 +32,9 @@ export default function startServer(): Server {
   // Create a new server instance
   const port: number = parseInt(process.env.PORT as string);
   const server = new Server(port);
+
+  // Set up the middleware
+  defineMiddleware(server);
 
   // Set up the server
   defineRoutes(server);
