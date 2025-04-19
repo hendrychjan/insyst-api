@@ -3,6 +3,7 @@ import Logger from "./logger";
 export enum ErrorType {
   DbValidationError,
   DbDuplicateKeyError,
+  UserAuthError,
   Other,
 }
 
@@ -27,6 +28,8 @@ export default class ErrorHandler {
       parsedError.type = ErrorType.DbValidationError;
     } else if (e.name === "MongoError" && e.code === 11000) {
       parsedError.type = ErrorType.DbDuplicateKeyError;
+    } else if (e.name === "UserAuthError") {
+      parsedError.type = ErrorType.UserAuthError;
     }
     
     console.log(e);
@@ -55,6 +58,11 @@ export default class ErrorHandler {
       case ErrorType.DbDuplicateKeyError:
         res.status(400);
         res.send("The provided data violates a unique constraint.");
+        break;
+
+      case ErrorType.UserAuthError:
+        res.status(400);
+        res.send(parsedError.message);
         break;
 
       // Other errors are considered server errors (500 status code)

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import Server from "../services/server";
 import PingRoute from "../routes/ping";
 import UsersRoute from "../routes/users";
@@ -20,6 +21,7 @@ function defineRoutes(server: Server): void {
 function defineMiddleware(server: Server): void {
   server.useMiddleware(express.json());
   server.useMiddleware(express.urlencoded({ extended: true }));
+  server.useMiddleware(cors({origin: "http://localhost:5173"}));
 }
 
 /**
