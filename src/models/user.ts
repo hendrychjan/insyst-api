@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Types, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
@@ -8,6 +8,12 @@ interface IUser {
   password: string;
   isAdmin: boolean;
   getToken: () => Promise<string>;
+}
+
+export interface IJWTUserPayload {
+  _id: Types.ObjectId;
+  name: string;
+  isAdmin: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -41,7 +47,7 @@ userSchema.methods.getToken = async function (): Promise<string> {
   // If credentials are correct, generate an api token
   if (userInDb && (await bcrypt.compare(this.password, userInDb.password))) {
     const token = jwt.sign(
-      _.pick(userInDb, ["name", "isAdmin"]),
+      _.pick(userInDb, ["_id", "name", "isAdmin"]) as IJWTUserPayload,
       process.env.JWT_SECRET!
     );
     return token;

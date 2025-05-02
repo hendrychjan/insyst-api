@@ -3,6 +3,7 @@ import cors from "cors";
 import Server from "../services/server";
 import PingRoute from "../routes/ping";
 import UsersRoute from "../routes/users";
+import LocationsRoute from "../routes/locations";
 import Logger from "../services/logger";
 
 /**
@@ -12,6 +13,7 @@ import Logger from "../services/logger";
 function defineRoutes(server: Server): void {
   server.useRoute("/ping", new PingRoute());
   server.useRoute("/users", new UsersRoute());
+  server.useRoute("/locations", new LocationsRoute());
 }
 
 /**
